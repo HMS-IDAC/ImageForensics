@@ -1,6 +1,3 @@
-# ImageForensics
-3-Branch Siamese Network Model to Detect Duplicates in Microscopic Images
-
 train.py
     Script to train/test the model on synthetic data.
     Expects training data to be grayscale images, of size 256x256.
