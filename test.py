@@ -48,7 +48,7 @@ with tf.device('/gpu:0'):
 
     nclasses = len(impaths)
 
-    Ancor = np.zeros((nclasses,imcropsize,imcropsize,nchannels))
+    Anchor = np.zeros((nclasses,imcropsize,imcropsize,nchannels))
     Same  = np.zeros((nclasses,imcropsize,imcropsize,nchannels))
     Diff  = np.zeros((nclasses,imcropsize,imcropsize,nchannels))
 
@@ -59,7 +59,7 @@ with tf.device('/gpu:0'):
     sgm_errors = np.zeros((nclasses,1))
 
     for irun in range(nruns):
-    	l_ancor = []
+    	l_anchor = []
     	l_same = []
     	l_diff = []
         for i in range(nclasses):
@@ -73,23 +73,23 @@ with tf.device('/gpu:0'):
             perm = np.arange(nsameclass)
             np.random.shuffle(perm)
 
-            ancor = '%s/%s/%s' % (impath,classes[i],impaths[i][perm[0]])
+            anchor = '%s/%s/%s' % (impath,classes[i],impaths[i][perm[0]])
             same = '%s/%s/%s' % (impath,classes[i],impaths[i][perm[1]])
 
             k = np.random.randint(0,ndiffclass)
             diff = '%s/%s/%s' % (impath,classes[j],impaths[j][k])
 
-            l_ancor.append('%s_%s' % (classes[i],impaths[i][perm[0]]))
+            l_anchor.append('%s_%s' % (classes[i],impaths[i][perm[0]]))
             l_same.append('%s_%s' % (classes[i],impaths[i][perm[1]]))
             l_diff.append('%s_%s' % (classes[j],impaths[j][k]))
 
-            Ancor[i,:,:,0] = misc.imread(ancor).astype(float)/255
+            Anchor[i,:,:,0] = misc.imread(anchor).astype(float)/255
             Same[i,:,:,0]  = misc.imread(same ).astype(float)/255
             Diff[i,:,:,0]  = misc.imread(diff ).astype(float)/255
 
-        # sms = model.test(sess,Ancor,Same)
-        # smd = model.test(sess,Ancor,Diff)
-        [sms,smd] = model.test_triplet(sess,Ancor,Same,Diff)
+        # sms = model.test(sess,Anchor,Same)
+        # smd = model.test(sess,Anchor,Diff)
+        [sms,smd] = model.test_triplet(sess,Anchor,Same,Diff)
 
         acc = 0
         accS = 0
@@ -108,9 +108,9 @@ with tf.device('/gpu:0'):
                 s = 'Diff_ERROR'
 
             if nruns == 1:
-                concat1 = np.concatenate((Ancor[i,:,:,0],0.5*np.ones((imcropsize,5))),axis=1)
+                concat1 = np.concatenate((Anchor[i,:,:,0],0.5*np.ones((imcropsize,5))),axis=1)
                 concat2 = np.concatenate((concat1,Same[i,:,:,0]),axis=1)
-                misc.imsave('%s/I_idx%03d_anc_cls%s_%03d_%s.png' % (imtestoutpath,i,l_ancor[i][:-4],100*sms[i],s),concat2)
+                misc.imsave('%s/I_idx%03d_anc_cls%s_%03d_%s.png' % (imtestoutpath,i,l_anchor[i][:-4],100*sms[i],s),concat2)
 
             if smd[i] > 0.5:
                 acc_errors[i,0] += 1
@@ -124,9 +124,9 @@ with tf.device('/gpu:0'):
                 accD += 1
             
             if nruns == 1:            
-                concat1 = np.concatenate((Ancor[i,:,:,0],0.5*np.ones((imcropsize,5))),axis=1)
+                concat1 = np.concatenate((Anchor[i,:,:,0],0.5*np.ones((imcropsize,5))),axis=1)
                 concat2 = np.concatenate((concat1,Diff[i,:,:,0]),axis=1)
-                misc.imsave('%s/I_idx%03d_anc_cls%s_%03d_%s.png' % (imtestoutpath,i,l_ancor[i][:-4],100*smd[i],s),concat2)
+                misc.imsave('%s/I_idx%03d_anc_cls%s_%03d_%s.png' % (imtestoutpath,i,l_anchor[i][:-4],100*smd[i],s),concat2)
 
         acrc = (float(acc)/float(2*nclasses))
         acrcS = (float(accS)/float(nclasses))
