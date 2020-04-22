@@ -3,21 +3,35 @@
 <hr>
 
 <p>
-	<h2>ImageForensics</h2>
+	<h2>Image Forensics</h2>
+</p>
+
+<p>The Image and Data Analysis Core and the Office for Academic and Research Integrity at Harvard Medical School
+   have an ongoing collaboration developing tools to identify re-use of images in academic publications.
+   As widely publicized by venues such as Retraction Watch, this problem is of increasing relevance.
+   Most of these manipulations are currently detected by humans subjectively, or using at most manual or semi-automated tools.
 </p>
 
 <p>
-Learning Manipulation-Invariant Image Similarity for Detecting Re-Use of Images in Scientific Publications
+To tackle this problem at scale, our team is currently developing methods to determine if, given two images,
+one is a manipulated version of the other -- and, in case they are, further identify subregions in the images
+that provide matching evidence. Manipulations include a broad range of transformations representing common alterations
+and obfuscations ranging from simple crop and rigid transformation to projective and nonlinear transformations,
+histogram adjustment, or local alterations such as partial erasing, the addition of text and annotations, etc.
+We therefore apply metric-learning approaches based on convolutional neural networks to produce similarity functions
+which are invariant to these manipulations. These models are trained on a large database of synthetically altered biological
+images and tested on real-world cases of image manipulation which were discovered in peer-reviewed publications.
 </p>
 
 <hr>
 
+<h2>Phase 1</h2>
+	
 <p>
-    Manipulation and re-use of images in scientific publications is a recurring problem, at present lacking a scalable solution.  Existing tools for detecting image duplication are mostly manual or semi-automated, despite the fact that generating data for a learning-based approach is straightforward. The goal of this project is to determine if, given two images, one is a manipulated version of the other by means of certain geometric and statistical manipulations, e.g. copy, rotation, translation, scale, perspective transform, histogram adjustment, partial erasing, and compression artifacts. We propose a solution based on a 3-branch Siamese Convolutional Neural Network. The convnet model is trained to map images into a 128-dimensional space, where the Euclidean distance between duplicate (respectively, unique) images is no greater (respectively, greater) than 1. Our results suggest that such an approach can serve as tool to improve surveillance of the published and in-peer-review literature for image manipulation.
+In the first phase of this project, we implemented a siamese network model for duplicate detection,
+and curated a dataset of synthetic images for training.
 </p>
-
-<hr>
-
+	
 <p align='center'>
 <a href="ImageForensics.png"> <img src="ImageForensics.png" width="80%" border="0" /> </a>
 </p>
